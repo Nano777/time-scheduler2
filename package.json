@@ -1,5 +1,5 @@
 {
-  "name": "linebot",
+  "name": "LineBot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "nano",
   "license": "ISC",
   "dependencies": {
     "@line/bot-sdk": "*",
