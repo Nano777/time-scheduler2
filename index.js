@@ -19,7 +19,7 @@ app.post('/callback', (req, res) => {
       replyToken: req.body.events[0].replyToken,
       messages: [{
         type: 'text',
-        text: req.body.events[0].message.text // ここに指定した文字列がボットの発言になる
+        text: "うるさい"//req.body.events[0].message.text // ここに指定した文字列がボットの発言になる
       }]
     },
     auth: {
