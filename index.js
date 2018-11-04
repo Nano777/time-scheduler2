@@ -66,7 +66,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			*/
 		}
 	})
-    console.log(req.body);
+    //console.log(req.body);
 });
 
 function queryDatabase(event, column, condition, callback){
@@ -75,7 +75,7 @@ function queryDatabase(event, column, condition, callback){
 		if (err) throw err;
 		else {
 			client.query(query,function(error,results){
-				console.log(results[0]);
+				console.log(results);
 				bot.replyMessage(event.replyToken,{
 					type:"text",
 					text:results
