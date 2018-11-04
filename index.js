@@ -32,7 +32,21 @@ const config = {
 const client = new pg.Client(config);
 client.connect(err => {
     if (err) throw err;
-    else {}
+    else {
+		client.query(query)
+        .then(res => {
+            const rows = res.rows;
+
+            rows.map(row => {
+                console.log(`Read: ${JSON.stringify(row)}`);
+            });
+
+            process.exit();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+	}
 });
 
 
@@ -53,7 +67,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:queryDatabase()
+						text:"";
 					});
 					break;
 				default:
