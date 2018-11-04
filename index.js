@@ -81,7 +81,7 @@ function queryDatabase(event, column, condition, callback){
 		})
 		bot.replyMessage(event.replyToken,{
 			type:"text",
-			text:reply.slice(0,-3);
+			text:reply.slice(0,-2);
 		});	
 	});
 }
