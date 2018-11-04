@@ -71,16 +71,18 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 
 function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
+	const reply = '';
 	client.connect(err => {
 		if (err) throw err;
 		else {
 			client.query(query,function(error,result){
 				result.rows.forEach(function(row){
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:row.period+'限.'+row.name
-					});
+					reply = reply+row.period+'限.'+row.name+'/n';
 				})
+				bot.replyMessage(event.replyToken,{
+					type:"text",
+					text:reply
+				});	
 			});
 		}
 	});
