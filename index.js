@@ -82,6 +82,7 @@ function queryDatabase(column, condition){
 		else {
 			client.query(query)
 			.then(res => {
+				console.log(res.rows[0].name);
 				return res.rows[0].name;
 			})
 			.catch(err => {
