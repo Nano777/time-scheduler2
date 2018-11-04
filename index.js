@@ -44,7 +44,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					const rows = queryDatabase('day_of_week', "'" + event.message.text +"'");
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:rows[0].name
+						text:rows.name
 					});
 					
 					break;
@@ -82,7 +82,7 @@ function queryDatabase(column, condition){
 		else {
 			client.query(query)
 			.then(res => {
-				return res.rows;
+				return res.rows[0];
 			})
 			.catch(err => {
 				console.log(err);
