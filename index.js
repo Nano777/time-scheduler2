@@ -86,5 +86,5 @@ function queryDatabase(event, column, condition, callback){
 			});
 		}
 	});
-	client.end;
+	client.end();
 }
