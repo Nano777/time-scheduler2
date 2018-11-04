@@ -79,9 +79,10 @@ function queryDatabase(event, column, condition, callback){
 		result.rows.forEach(function(row){
 			reply = reply+row.period+'限.'+row.name+'\n';
 		})
+		reply = reply.slice(0,-2);
 		bot.replyMessage(event.replyToken,{
 			type:"text",
-			text:reply.slice(0,-2);
+			text:reply
 		});	
 	});
 }
