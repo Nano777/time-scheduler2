@@ -53,6 +53,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /あした/.test(event.message.text):
 					var date = new Date();
 					var wDay = date.getDay();
+					console.log(WeekChars[wDay]);
 					queryDatabase(event, 'day_of_week', "'" + WeekChars[wDay] +"' ORDER BY period");
 					break;
 				default:
@@ -81,6 +82,7 @@ function queryDatabase(event, column, condition, callback){
 	
 	client.query(query,function(error,result){
 		if(result.rowCount == 0){
+			console.log(result);
 			bot.replyMessage(event.replyToken,{
 				type:"text",
 				text:"データなし"
