@@ -32,7 +32,7 @@ const client = new Clien({
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
 	
-	pg.connect(DATABASE_URL || "tcp://localhost:5432/mylocaldb",function(err, client, done){
+	client.connect(DATABASE_URL || "tcp://localhost:5432/mylocaldb",function(err, client, done){
 	});
 	
 	req.body.events.forEach((event) =>{
