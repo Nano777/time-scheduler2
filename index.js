@@ -20,6 +20,7 @@ const bot = new line.Client(line_config);
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
 	
+	/*
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			if(event.message.text == "こんにちは"){
@@ -30,5 +31,6 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			}
 		}
 	})
+	*/
     console.log(req.body);
 });
