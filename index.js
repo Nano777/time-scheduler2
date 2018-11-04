@@ -30,7 +30,12 @@ const config = {
 };
 
 const client = new pg.Client(config);
-
+var callback = function(i){
+	bot.replyMessage(event.replyToken,{
+		type:"text",
+		text:i
+	});
+};
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
@@ -82,7 +87,7 @@ function queryDatabase(column, condition){
 		else {
 			client.query(query)
 			.then(res => {
-				console.log(res.rows[0].name);
+				callback(res.rows[0].name);
 				return res.rows[0].name;
 			})
 			.catch(err => {
