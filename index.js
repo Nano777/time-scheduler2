@@ -75,7 +75,7 @@ function queryDatabase(event, column, condition, callback){
 		if (err) throw err;
 		else {
 			client.query(query,function(error,results){
-				readyState.forEach(function(result){
+				results.forEach(function(result){
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:result
