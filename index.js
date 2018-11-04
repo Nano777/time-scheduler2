@@ -31,6 +31,7 @@ const config = {
 
 const client = new pg.Client(config);
 client.connect();
+
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
@@ -74,19 +75,13 @@ function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
 	var reply = '';
 	
-	client.close();
-	client.connect(err => {
-		if (err) throw err;
-		else {
-			client.query(query,function(error,result){
-				result.rows.forEach(function(row){
-					reply = reply+row.period+'限.'+row.name+'\n';
-				})
-				bot.replyMessage(event.replyToken,{
-					type:"text",
-					text:reply
-				});	
-			});
-		}
+	client.query(query,function(error,result){
+		result.rows.forEach(function(row){
+			reply = reply+row.period+'限.'+row.name+'\n';
+		})
+		bot.replyMessage(event.replyToken,{
+			type:"text",
+			text:reply
+		});	
 	});
 }
