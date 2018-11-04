@@ -32,7 +32,20 @@ const config = {
 const client = new pg.Client(config);
 client.connect(err => {
     if (err) throw err;
-    else {}
+    else {
+		client.query('SELECT * FROM time_schedule;')
+        .then(res => {
+            const rows = res.rows;
+
+			rows.forEach((row) =>{
+				console.log(row);
+			})
+            //process.exit();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+	}
 });
 
 
@@ -51,28 +64,10 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /時間割/.test(event.message.text):
-					client.query('SELECT * FROM time_schedule;')
-					.then(res => {
-						const rows = res.rows;
-
-						rows.forEach((row) =>{
-							bot.replyMessage(event.replyToken,{
-								type:"text",
-								text:row
-							});
-						})
-						
-						//process.exit();
-					})
-					.catch(err => {
-						console.log(err);
-					});
-					/*
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"a"
 					});
-					*/
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
