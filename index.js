@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 })) // for parsing application/x-www-form-urlencoded
 
-var re_text = "null";
+var re_text = "初期値";
 
 app.post('/callback', (req, res) => {
   const options = {
