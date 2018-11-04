@@ -1,41 +1,23 @@
-// import modules
-const express = require('express')
-const request = require('request')
-const bodyParser = require('body-parser')
-var access_token = 'CaG10hTyBbHkVLRtLZ4B7NCoQ2VkTr7KxlmggfXD3yZvwSP2jD6BjtuTq4I73CLmigmn8q45BO5pZNaXXJQ/jwqKR0dbzoVoVRxddSmCXUe8spQ4H4ji8FDn15+RFBXxNu7aFR8LfGSqUeSV5jeaBgdB04t89/1O/w1cDnyilFU=';
+// -----------------------------------------------------------------------------
+// モジュールのインポート
+const server = require("express")();
+const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 
-// create a new express server
-const app = express()
+// -----------------------------------------------------------------------------
+// パラメータ設定
+const line_config = {
+    channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
+    channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretをセットしています
+};
 
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({
-  extended: true
-})) // for parsing application/x-www-form-urlencoded
+// -----------------------------------------------------------------------------
+// Webサーバー設定
+server.listen(process.env.PORT || 3000);
 
-var re_text = "初期値";
 
-app.post('/callback', (req, res) => {
-  const options = {
-    method: 'POST',
-    uri: 'https://api.line.me/v2/bot/message/reply',
-    body: {
-      replyToken: req.body.events[0].replyToken,
-      messages: [{
-        type: 'text',
-        text: re_text // ここに指定した文字列がボットの発言になる
-      }]
-    },
-    auth: {
-      bearer: access_token // ここは自分のtokenに書き換える
-    },
-    json: true
-  }
-  request(options, (err, response, body) => {
-    console.log(JSON.stringify(response))
-  })
-  res.send('OK')
-})
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log('server starting on PORT:' + process.env.PORT)
-})
+// -----------------------------------------------------------------------------
+// ルーター設定
+server.post('/webhook', line.middleware(line_config), (req, res, next) => {
+    res.sendStatus(200);
+    console.log(req.body);
+});
