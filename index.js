@@ -55,6 +55,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					console.log(dayName);
 					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
 					break;
+				case /きょう|今日/.test(event.message.text):
+					var dayName = '日月火水木金土'[new Date().getDay()];
+					console.log(dayName);
+					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
+					break;
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
