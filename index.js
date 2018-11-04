@@ -25,12 +25,28 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
+			switch(true){
+				case /月曜日/.test(event.message.text):
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:"1,3,4"
+					});
+					break;
+				default:
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:"知りません"
+					});
+					break;
+			}
+			/*
 			if(event.message.text == "こんにちは"){
 				bot.replyMessage(event.replyToken,{
 					type:"text",
 					text:"これはこれは"
 				});
 			}
+			*/
 		}
 	})
     console.log(req.body);
