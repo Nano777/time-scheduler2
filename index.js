@@ -74,7 +74,7 @@ function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
 	var reply = '';
 	
-	client.end();
+	client.close();
 	client.connect(err => {
 		if (err) throw err;
 		else {
