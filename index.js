@@ -51,11 +51,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /あした/.test(event.message.text):
-					var tomorrow = new Date();
-					tomorrow.setDate(tomorrow.getDate() + 1);
-					var wDay = tomorrow.getDay();
-					console.log(WeekChars[wDay]);
-					queryDatabase(event, 'day_of_week', "'" + WeekChars[wDay] +"' ORDER BY period");
+					var dayName = '日月火水木金土'[new Date().getDay() + 1];
+					console.log(dayName);
+					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
