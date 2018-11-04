@@ -33,12 +33,12 @@ const client = new pg.Client(config);
 client.connect(err => {
     if (err) throw err;
     else {
-		client.query(query)
+		client.query('SELECT * FROM inventory;')
         .then(res => {
             const rows = res.rows;
 
             rows.map(row => {
-                console.log(`Read: ${JSON.stringify(row)}`);
+                console.log('Read: ${JSON.stringify(row)}');
             });
 
             process.exit();
