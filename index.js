@@ -77,7 +77,7 @@ function queryDatabase(event, column, condition, callback){
 			client.query(query,function(error,results){
 				bot.replyMessage(event.replyToken,{
 					type:"text",
-					text:result
+					text:results
 				});
 			});
 		}
