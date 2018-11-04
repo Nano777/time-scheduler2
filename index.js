@@ -68,12 +68,15 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					client.query(query)
 					.then(res =>{
 						const rows = res.row;
-						rows.forEach((row)=>{
+						rows.forEach((row) => {
 							bot.replyMessage(event.replyToken,{
 								type:"text",
 								text:row
 							});
 						})
+					})
+					.catch(err => {
+						console.log(err);
 					})
 					bot.replyMessage(event.replyToken,{
 						type:"text",
