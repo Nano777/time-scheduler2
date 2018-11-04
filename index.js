@@ -30,6 +30,7 @@ const config = {
 };
 
 const client = new pg.Client(config);
+client.connect();
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
@@ -73,6 +74,7 @@ function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
 	var reply = '';
 	
+	client.end();
 	client.connect(err => {
 		if (err) throw err;
 		else {
