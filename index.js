@@ -2,6 +2,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+const reply;
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -30,12 +31,6 @@ const config = {
 };
 
 const client = new pg.Client(config);
-var callback = function(i){
-	bot.replyMessage(event.replyToken,{
-		type:"text",
-		text:i
-	});
-};
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
@@ -46,12 +41,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					
-					const rows = queryDatabase('day_of_week', "'" + event.message.text +"'");
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:rows
-					});
-					
+					const rows = queryDatabase(event, 'day_of_week', "'" + event.message.text +"'");
 					break;
 				case /時間割/.test(event.message.text):
 					
@@ -80,19 +70,18 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
     console.log(req.body);
 });
 
-function queryDatabase(column, condition){
+function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
 	client.connect(err => {
 		if (err) throw err;
 		else {
-			client.query(query)
-			.then(res => {
-				callback(res.rows[0].name);
-				return res.rows[0].name;
-			})
-			.catch(err => {
-				console.log(err);
-				return null;
+			client.query(query,function(error,results){
+				readyState.forEach(function(result){
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:result
+					});
+				});
 			});
 		}
 	});
