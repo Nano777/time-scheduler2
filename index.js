@@ -83,6 +83,7 @@ function queryDatabase(event, column, condition, callback){
 			});	
 			return;
 		}
+		console.log(result);
 		result.rows.forEach(function(row){
 			reply = reply+row.period+'限.'+row.name+'\n';
 		})
