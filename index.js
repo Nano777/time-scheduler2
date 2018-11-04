@@ -83,9 +83,9 @@ function queryDatabase(event, column, condition, callback){
 			});	
 			return;
 		}
-		console.log(result);
+		//console.log(result);
 		result.rows.forEach(function(row){
-			reply = reply+row.period+'限.'+row.name+'\n';
+			reply = reply+row.period+'限.'+row.name+ '(' + row.area +')\n';
 		})
 		reply = reply.slice(0,-2);
 		bot.replyMessage(event.replyToken,{
