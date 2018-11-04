@@ -64,6 +64,17 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /時間割/.test(event.message.text):
+					const query = 'SELECT * FROM time_schedule WHERE day_of_week=\'火曜日\';';
+					client.query(query)
+					.then(res =>{
+						const rows = res.row;
+						rows.forEach((row)=>{
+							bot.replyMessage(event.replyToken,{
+								type:"text",
+								text:row
+							});
+						})
+					})
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"a"
