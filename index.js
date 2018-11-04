@@ -67,7 +67,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:"";
+						text:"a"
 					});
 					break;
 				default:
