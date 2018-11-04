@@ -44,7 +44,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					const rows = queryDatabase('day_of_week', "'" + event.message.text +"'");
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:rows[0]
+						text:rows[0].name
 					});
 					
 					break;
