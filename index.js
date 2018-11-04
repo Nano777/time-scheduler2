@@ -40,7 +40,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					
-					const rows = queryDatabase(event, 'day_of_week', "'" + event.message.text +"'");
+					queryDatabase(event, 'day_of_week', "'" + event.message.text +"'");
 					break;
 				case /時間割/.test(event.message.text):
 					
