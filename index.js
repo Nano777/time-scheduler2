@@ -29,6 +29,7 @@ const config = {
 	port:5432
 };
 
+const WeekChars = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日"];
 const client = new pg.Client(config);
 client.connect();
 
@@ -41,15 +42,18 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					
 					queryDatabase(event, 'day_of_week', "'" + event.message.text +"' ORDER BY period");
 					break;
 				case /時間割/.test(event.message.text):
-					
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"a"
 					});
+					break;
+				case /あした/.test(event.message.text):
+					var date = new Date();
+					var wDay = date.getDay();
+					queryDatabase(event, 'day_of_week', "'" + WeekChars[wDay] +"' ORDER BY period");
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
