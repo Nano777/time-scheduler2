@@ -97,7 +97,7 @@ function queryDatabase(event, column, condition, callback){
 		result.rows.forEach(function(row){
 			reply = reply+row.period+'限.'+row.name+ '(' + row.area +')\n';
 		})
-		reply = reply.slice(0,-2);
+		reply = reply.slice(0,-1);
 		bot.replyMessage(event.replyToken,{
 			type:"text",
 			text:reply
