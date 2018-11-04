@@ -71,7 +71,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 
 function queryDatabase(event, column, condition, callback){
 	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
-	const reply = '';
+	var reply = '';
 	client.connect(err => {
 		if (err) throw err;
 		else {
