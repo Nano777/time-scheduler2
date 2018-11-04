@@ -51,8 +51,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /あした/.test(event.message.text):
-					var date = new Date();
-					var wDay = date.getDay();
+					var tomorrow = new Date();
+					tomorrow.setDate(tomorrow.getDate() + 1);
+					var wDay = tomorrow.getDay();
 					console.log(WeekChars[wDay]);
 					queryDatabase(event, 'day_of_week', "'" + WeekChars[wDay] +"' ORDER BY period");
 					break;
