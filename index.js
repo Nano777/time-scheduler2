@@ -30,24 +30,6 @@ const config = {
 };
 
 const client = new pg.Client(config);
-client.connect(err => {
-    if (err) throw err;
-    else {
-		client.query('SELECT * FROM time_schedule WHERE day_of_week=\'火曜日\';')
-        .then(res => {
-            const rows = res.rows;
-
-			rows.forEach((row) =>{
-				console.log(row);
-			})
-            //process.exit();
-        })
-        .catch(err => {
-            console.log(err);
-        });
-	}
-});
-
 
 // -----------------------------------------------------------------------------
 // ルーター設定
@@ -58,26 +40,18 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:"準備中"
+					
+					const rows = queryDatabase('day_of_week', "'" + event.message.text +"'");
+					rows.forEach(function(name){
+						bot.replyMessage(event.replyToken,{
+							type:"text",
+							text:name
+						});
 					});
+					
 					break;
 				case /時間割/.test(event.message.text):
-					const query = 'SELECT * FROM time_schedule WHERE day_of_week=\'火曜日\';';
-					client.query(query)
-					.then(res =>{
-						const rows = res.row;
-						rows.forEach((row) => {
-							bot.replyMessage(event.replyToken,{
-								type:"text",
-								text:row
-							});
-						})
-					})
-					.catch(err => {
-						console.log(err);
-					})
+					
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"a"
@@ -103,18 +77,19 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
     console.log(req.body);
 });
 
-function queryDatabase(){
-	const query = 'SELECT * FROM time_schedule;';
-	client.query(query)
-		.then(res =>{
-			const rows = res.rows;
-			
-			rows.map(row =>{
-				return'Read:${JSON.stringify(row)}';
+function queryDatabase(column, condition){
+	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
+	client.connect(err => {
+		if (err) throw err;
+		else {
+			client.query(query)
+			.then(res => {
+				return res.rows;
+			})
+			.catch(err => {
+				console.log(err);
+				return null;
 			});
-			process.exit();
-		})
-		.catch(err =>{
-			return'err'
-		});
+		}
+	});
 }
