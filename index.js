@@ -37,10 +37,10 @@ client.connect(err => {
         .then(res => {
             const rows = res.rows;
 
-            rows.map(row => {
-                console.log('Read: ${JSON.stringify(row)}');
-            });
-
+			rows.forEach((row) =>{
+				console.log(row);
+			})
+			
             process.exit();
         })
         .catch(err => {
