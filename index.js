@@ -26,7 +26,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /月曜日[亜-熙ぁ-んァ-ヶ]*教えて/.test(event.message.text):
+				case /月曜日.*教えて/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"1,3,4"
