@@ -75,11 +75,12 @@ function queryDatabase(event, column, condition, callback){
 		if (err) throw err;
 		else {
 			client.query(query,function(error,result){
-				console.log(result.rows[0].name);
-				bot.replyMessage(event.replyToken,{
-					type:"text",
-					text:result.rows[0].name
-				});
+				result.rows.forEach(function(row){
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:row.period+'限.'+row.name
+					});
+				})
 			});
 		}
 	});
