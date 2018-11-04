@@ -77,7 +77,7 @@ function queryDatabase(event, column, condition, callback){
 		else {
 			client.query(query,function(error,result){
 				result.rows.forEach(function(row){
-					reply = reply+row.period+'限.'+row.name+'/n';
+					reply = reply+row.period+'限.'+row.name+'\n';
 				})
 				bot.replyMessage(event.replyToken,{
 					type:"text",
