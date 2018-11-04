@@ -41,6 +41,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					
 					queryDatabase(event, 'day_of_week', "'" + event.message.text +"' ORDER BY period");
+					client.end();
 					break;
 				case /時間割/.test(event.message.text):
 					
@@ -85,7 +86,6 @@ function queryDatabase(event, column, condition, callback){
 					text:reply
 				});	
 			});
-			client.end();
 		}
 	});
 }
