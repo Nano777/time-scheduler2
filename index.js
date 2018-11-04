@@ -53,7 +53,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:"準備中"
+						text:queryDatabase()
 					});
 					break;
 				default:
@@ -83,11 +83,11 @@ function queryDatabase(){
 			const rows = res.rows;
 			
 			rows.map(row =>{
-				console.log('Read:${JSON.stringify(row)}');
+				return'Read:${JSON.stringify(row)}';
 			});
 			process.exit();
 		})
 		.catch(err =>{
-			console.log(err)
+			return'err'
 		});
 }
