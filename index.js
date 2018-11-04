@@ -19,6 +19,14 @@ const line_config = {
 server.listen(process.env.PORT || 3000);
 
 const bot = new line.Client(line_config);
+const {Client} = require('pg')
+const client = new Clien({
+	user:'npymhmwnhroshl',
+	host:'ec2-50-16-196-57.compute-1.amazonaws.com',
+	database:'dck8klhql4jikk',
+	password:'a15e5e16473dac9b17291621e1b46ffd92cc9f757155456d061c20efdca5d185',
+	port:5432
+})
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
