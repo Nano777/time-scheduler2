@@ -7,6 +7,7 @@ const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 // パラメータ設定
 const ACCESS_TOKEN = 'CaG10hTyBbHkVLRtLZ4B7NCoQ2VkTr7KxlmggfXD3yZvwSP2jD6BjtuTq4I73CLmigmn8q45BO5pZNaXXJQ/jwqKR0dbzoVoVRxddSmCXUe8spQ4H4ji8FDn15+RFBXxNu7aFR8LfGSqUeSV5jeaBgdB04t89/1O/w1cDnyilFU='
 const CHANNEL_SECRET = 'b893f338979de6fd50e02a8d97ae3cfb'
+const DATABASE_URL = 'ec2-50-16-196-57.compute-1.amazonaws.com'
 
 const line_config = {
     channelAccessToken:ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
@@ -23,10 +24,13 @@ const bot = new line.Client(line_config);
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
 	
+	pg.connect(DATABASE_URL || "tcp://localhost:5432/mylocaldb",function(err, client, done){
+	});
+	
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /月曜日.*教えて/.test(event.message.text):
+				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"1,3,4"
