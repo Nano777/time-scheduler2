@@ -40,7 +40,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /[月火水木金土日]曜日.*/.test(event.message.text):
+				case /[月火水木金土日]曜日?.*/.test(event.message.text):
 					
 					queryDatabase(event, 'day_of_week', "'" + event.message.text +"' ORDER BY period");
 					break;
