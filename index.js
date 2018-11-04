@@ -20,7 +20,7 @@ server.listen(process.env.PORT || 3000);
 
 const bot = new line.Client(line_config);
 const pg = require('pg')
-const client = new Clien({
+const client = new Client({
 	user:'npymhmwnhroshl',
 	host:'ec2-50-16-196-57.compute-1.amazonaws.com',
 	database:'dck8klhql4jikk',
