@@ -33,7 +33,7 @@ const client = new pg.Client(config);
 client.connect(err => {
     if (err) throw err;
     else {
-		client.query('SELECT * FROM time_schedule;')
+		client.query('SELECT * FROM time_schedule WHERE day_of_week=\'火曜日\';')
         .then(res => {
             const rows = res.rows;
 
