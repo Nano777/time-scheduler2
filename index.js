@@ -74,11 +74,11 @@ function queryDatabase(event, column, condition, callback){
 	client.connect(err => {
 		if (err) throw err;
 		else {
-			client.query(query,function(error,results){
-				console.log(results);
+			client.query(query,function(error,result){
+				console.log(result.rows[0].name);
 				bot.replyMessage(event.replyToken,{
 					type:"text",
-					text:results
+					text:result.rows[0].name
 				});
 			});
 		}
