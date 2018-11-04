@@ -19,7 +19,7 @@ const line_config = {
 server.listen(process.env.PORT || 3000);
 
 const bot = new line.Client(line_config);
-const {Client} = require('pg')
+const pg = require('pg')
 const client = new Clien({
 	user:'npymhmwnhroshl',
 	host:'ec2-50-16-196-57.compute-1.amazonaws.com',
@@ -27,13 +27,13 @@ const client = new Clien({
 	password:'a15e5e16473dac9b17291621e1b46ffd92cc9f757155456d061c20efdca5d185',
 	port:5432
 })
+
+client.connect(DATABASE_URL || "tcp://localhost:5432/mylocaldb",function(err, client, done){
+});
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/callback', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
-	
-	client.connect(DATABASE_URL || "tcp://localhost:5432/mylocaldb",function(err, client, done){
-	});
 	
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
