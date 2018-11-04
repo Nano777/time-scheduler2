@@ -33,7 +33,7 @@ const client = new pg.Client(config);
 client.connect(err => {
     if (err) throw err;
     else {
-		client.query('SELECT * FROM inventory;')
+		client.query('SELECT * FROM time_schedule;')
         .then(res => {
             const rows = res.rows;
 
