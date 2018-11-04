@@ -75,11 +75,9 @@ function queryDatabase(event, column, condition, callback){
 		if (err) throw err;
 		else {
 			client.query(query,function(error,results){
-				results.row.forEach(function(result){
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:result
-					});
+				bot.replyMessage(event.replyToken,{
+					type:"text",
+					text:result
 				});
 			});
 		}
