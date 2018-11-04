@@ -34,7 +34,6 @@ client.connect(err => {
     if (err) throw err;
     else {}
 });
-client.end
 
 
 // -----------------------------------------------------------------------------
@@ -48,7 +47,13 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
-						text:"1,3,4"
+						text:"準備中"
+					});
+					break;
+				case /時間割/.test(event.message.text):
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:"準備中"
 					});
 					break;
 				default:
@@ -70,3 +75,19 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	})
     console.log(req.body);
 });
+
+function queryDatabase(){
+	const query = 'SELECT * FROM time_schedule;';
+	client.query(query)
+		.then(res =>{
+			const rows = res.rows;
+			
+			rows.map(row =>{
+				console.log('Read:${JSON.stringify(row)}');
+			});
+			process.exit();
+		})
+		.catch(err =>{
+			console.log(err)
+		});
+}
