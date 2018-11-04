@@ -76,7 +76,7 @@ function queryDatabase(event, column, condition, callback){
 	var reply = '';
 	
 	client.query(query,function(error,result){
-		if(result == null){
+		if(result.rowCount == 0){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
 				text:"データなし"
