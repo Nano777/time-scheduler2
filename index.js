@@ -50,7 +50,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 						text:"a"
 					});
 					break;
-				case /あした/.test(event.message.text):
+				case /あした|明日/.test(event.message.text):
 					var dayName = '日月火水木金土'[new Date().getDay() + 1];
 					console.log(dayName);
 					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
