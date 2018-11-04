@@ -41,8 +41,8 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					
-					const rows = queryDatabase('day_of_week', "'" + event.message.text +"'");
-					rows.forEach(function(name){
+					const row_s = queryDatabase('day_of_week', "'" + event.message.text +"'");
+					row_s.forEach(function(name){
 						bot.replyMessage(event.replyToken,{
 							type:"text",
 							text:name
