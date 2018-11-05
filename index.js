@@ -53,13 +53,12 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /きょう|今日/.test(event.message.text):
+					var dayName = '日月火水木金土'[new Date().getDay()];
 				case /あした|明日/.test(event.message.text):
-					var dayName;
-					if(/きょう|今日/.test(event.message.text)){
-						dayName = '日月火水木金土'[new Date().getDay()];
-					}else{
-						dayName = '日月火水木金土'[new Date().getDay() + 1];
+					if(typeof(dayName) == "undefined"){
+						var dayName = '日月火水木金土'[new Date().getDay() + 1];
 					}
+					
 					dayName = dayName+"曜日"
 					where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
 					queryDatabase(event, where, 'list');
