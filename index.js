@@ -44,7 +44,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
 					where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
-					queryDatabase(event, where, 'list');
+					SelectQuery(event, 'time_schedule', where, 'list');
 					break;
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
@@ -61,7 +61,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					
 					dayName = dayName+"曜日"
 					where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
-					queryDatabase(event, where, 'list');
+					SelectQuery(event, 'time_schedule', where, 'list');
+					break;
+				case /@.*/.test(event.message.text):
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
@@ -70,24 +72,18 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 			}
-			/*
-			if(event.message.text == "こんにちは"){
-				bot.replyMessage(event.replyToken,{
-					type:"text",
-					text:"これはこれは"
-				});
-			}
-			*/
 		}
 	})
     //console.log(req.body);
 });
 
-function queryDatabase(event, where, type){
-	const query = 'SELECT * FROM time_schedule '+ where + ';';
+function SelectQuery(event, table, where, type){
+	const query = "SELECT * FROM " + table + " "+ where + ';';
 	var reply = '';
 	
 	client.query(query,function(error,result){
+		//--------------------------------------
+		//No result
 		if(result.rowCount == 0){
 			console.log(result);
 			bot.replyMessage(event.replyToken,{
@@ -98,6 +94,8 @@ function queryDatabase(event, where, type){
 		}
 		//console.log(result);
 		
+		//--------------------------------------
+		//IndentMessage
 		switch(true){
 			case /list/.test(type):
 				result.rows.forEach(function(row){
@@ -109,6 +107,8 @@ function queryDatabase(event, where, type){
 				reply="err";
 		}
 		
+		//--------------------------------------
+		//SendMessage
 		bot.replyMessage(event.replyToken,{
 			type:"text",
 			text:reply
