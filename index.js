@@ -66,6 +66,10 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'list');
 					break;
 				case /@.*/.test(event.message.text):
+					var name = event.message.text.slice(1);
+					var table = 'mails';
+					var where = "WHERE name='" + name + "'";
+					SelectQuery(event, table, where, 'mail');
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
@@ -105,8 +109,12 @@ function SelectQuery(event, table, where, type){
 				});
 				reply = reply.slice(0,-1);
 				break;
+			case /mail/.test(type):
+				reply = result.rows[0].name + "\n" + result.rows[0].address;
+				break;
 			default:
 				reply="err";
+				break;
 		}
 		
 		//--------------------------------------
