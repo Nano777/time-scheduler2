@@ -42,7 +42,8 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					queryDatabase(event, 'day_of_week', "'" + event.message.text +"' ORDER BY period");
+					const where = "WHERE day_of_week='"+ event.message.txt +"' ORDER BY period";
+					queryDatabase(event, where, 'list');
 					break;
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
@@ -50,15 +51,17 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 						text:"a"
 					});
 					break;
-				case /あした|明日/.test(event.message.text):
-					var dayName = '日月火水木金土'[new Date().getDay() + 1];
-					console.log(dayName);
-					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
-					break;
 				case /きょう|今日/.test(event.message.text):
-					var dayName = '日月火水木金土'[new Date().getDay()];
-					console.log(dayName);
-					queryDatabase(event, 'day_of_week', "'" + dayName + "曜日" +"' ORDER BY period");
+				case /あした|明日/.test(event.message.text):
+					var dayName;
+					if(/きょう|今日/.test(event.message.text)){
+						dayName = '日月火水木金土'[new Date().getDay()];
+					}else{
+						dayName = '日月火水木金土'[new Date().getDay() + 1];
+					}
+					dayName = dayName+"曜日"
+					const where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
+					queryDatabase(event, where, 'list');
 					break;
 				default:
 					bot.replyMessage(event.replyToken,{
@@ -80,8 +83,8 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
     //console.log(req.body);
 });
 
-function queryDatabase(event, column, condition, callback){
-	const query = 'SELECT * FROM time_schedule WHERE '+column+'='+condition+';';
+function queryDatabase(event, where, type){
+	const query = 'SELECT * FROM time_schedule '+ where + ';';
 	var reply = '';
 	
 	client.query(query,function(error,result){
@@ -94,10 +97,18 @@ function queryDatabase(event, column, condition, callback){
 			return;
 		}
 		//console.log(result);
-		result.rows.forEach(function(row){
-			reply = reply+row.period+'限.'+row.name+ '(' + row.area +')\n';
-		})
-		reply = reply.slice(0,-1);
+		
+		switch(true){
+			case /list/.test(type):
+				result.rows.forEach(function(row){
+					reply = reply+row.period+'限.'+row.name+ '(' + row.area +')\n';
+				});
+				reply = reply.slice(0,-1);
+				break;
+			default:
+				reply="err";
+		}
+		
 		bot.replyMessage(event.replyToken,{
 			type:"text",
 			text:reply
