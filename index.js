@@ -68,7 +68,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /@.*/.test(event.message.text):
 					var name = event.message.text.slice(1);
 					var table = 'mails';
-					var where = "WHERE name='" + name + "'";
+					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
 					SelectQuery(event, table, where, 'mail');
 					break;
 				default:
