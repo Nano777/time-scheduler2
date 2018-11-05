@@ -43,7 +43,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					where = "WHERE day_of_week='"+ event.message.txt +"' ORDER BY period";
+					where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
 					queryDatabase(event, where, 'list');
 					break;
 				case /時間割/.test(event.message.text):
