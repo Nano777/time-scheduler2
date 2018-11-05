@@ -32,7 +32,6 @@ const config = {
 const WeekChars = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日"];
 const client = new pg.Client(config);
 client.connect();
-var where;
 
 // -----------------------------------------------------------------------------
 // ルーター設定
@@ -43,8 +42,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
-					SelectQuery(event, 'time_schedule', where, 'list');
+					var table = 'time_schedule';
+					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
+					SelectQuery(event, table, where, 'list');
 					break;
 				case /時間割/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
@@ -60,8 +60,10 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					}
 					
 					dayName = dayName+"曜日"
-					where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
-					SelectQuery(event, 'time_schedule', where, 'list');
+					
+					var table = 'time_schedule';
+					var where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
+					SelectQuery(event, table, where, 'list');
 					break;
 				case /@.*/.test(event.message.text):
 					break;
