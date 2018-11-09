@@ -72,29 +72,29 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 				case /登録/.test(event.message.text):
 					const massage = {
-					  "type": "template",
-					  "altText": "This is a buttons template",
-					  "template": {
-						  "type": "buttons",
-						  "title": "Menu",
-						  "text": "何曜日に追加しますか",
-						  "actions": [
-							{
-								"type": "postback",
-								"label": "Buy",
-								"data": "action=buy&itemid=123"
-							},
-							{
-							"type": "postback",
-							"label": "Add to cart",
-							"data": "action=add&itemid=123"
-							},
-							{  
-							"type":"message",
-							"label":"Yes",
-							"text":"Yes"
-							},
-						  ]
+						"type": "template",
+						"altText": "This is a buttons template",
+						"template": {
+							"type": "buttons",
+							"title": "Menu",
+							"text": "何曜日に追加しますか",
+							"actions": [
+								{
+									"type": "postback",
+									"label": "Buy",
+									"data": "action=buy&itemid=123"
+								},
+								{
+									"type": "postback",
+									"label": "Add to cart",
+									"data": "action=add&itemid=123"
+								},
+								{
+									"type": "uri",
+									"label": "View detail",
+									"uri": "http://example.com/page/123"
+								}
+							]
 					  }
 					};
 					bot.replyMessage(event.replyToken,message);
