@@ -47,10 +47,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'list');
 					break;
 				case /時間割/.test(event.message.text):
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:"a"
-					});
+					var table = 'time_schedule';
+					var where = "";
+					SelectQuery(event, table, where, 'list');
 					break;
 				case /きょう|今日/.test(event.message.text):
 					var dayName = '日月火水木金土'[new Date().getDay()];
@@ -71,6 +70,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
 					SelectQuery(event, table, where, 'mail');
 					break;
+				case /登録/.test(event.message.text):
+					bot.replyMessage(event.replyToken,{
+						type:"text",
+						text:""
+					})
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
