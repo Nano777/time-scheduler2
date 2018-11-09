@@ -71,32 +71,33 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'mail');
 					break;
 				case /登録/.test(event.message.text):
-					bot.replyMessage({
-						replyToken:event.replyToken,
-						messages:[{
-							type:"template",
-							template:"buttons",
-							"actions":[
-								{
-									type:"message",
-									label:"アクション 1",
-									text:"アクション 1t"
-								},
-								{
-									type: "message",
-									label: "アクション 2",
-									text: "アクション 2"
-								},
-								{
-									type: "message",
-									label: "アクション 3",
-									text: "アクション 3"
-								}
-							],
-							
-							text:"何曜日に追加しますか?"
-						}]
-					});
+					const massage = {
+					  "type": "template",
+					  "altText": "This is a buttons template",
+					  "template": {
+						  "type": "buttons",
+						  "title": "Menu",
+						  "text": "何曜日に追加しますか",
+						  "actions": [
+							  {
+								"type": "postback",
+								"label": "Buy",
+								"data": "action=buy&itemid=123"
+							  },
+							  {
+								"type": "postback",
+								"label": "Add to cart",
+								"data": "action=add&itemid=123"
+							  },
+							  {
+								"type": "message",
+								"label": "火曜日",
+								"text": "Tuesday"
+							  }
+						  ]
+					  }
+					};
+					bot.replyMessage(event.replyToken,message);
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
