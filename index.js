@@ -71,6 +71,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'mail');
 					break;
 				case /[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
+					console.log("登録モード")
 					var data = event.message.text.split('-');
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.user_id]
 					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
