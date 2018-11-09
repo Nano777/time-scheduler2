@@ -71,7 +71,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'mail');
 					break;
 				case /登録/.test(event.message.text):
-					const massage = {
+					const message = {
 						"type": "template",
 						"altText": "This is a buttons template",
 						"template": {
@@ -89,10 +89,10 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 									"label": "Add to cart",
 									"data": "action=add&itemid=123"
 								},
-								{
-									"type": "uri",
-									"label": "View detail",
-									"uri": "http://example.com/page/123"
+								{  
+									"type":"message",
+									"label":"火曜日",
+									"text":"Tuesday"
 								}
 							]
 					  }
