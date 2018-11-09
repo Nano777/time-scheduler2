@@ -106,6 +106,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 			}
 		}else if(event.type == "postback"){
+			/*
 			switch(true){
 				case /[月火水木金土日]曜日/.test(event.postback.data):
 				var table = 'time_schedule';
@@ -113,6 +114,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				SelectQuery(event, table, where, 'list');
 				break;
 			}
+			*/
 		}
 	})
     //console.log(req.body);
