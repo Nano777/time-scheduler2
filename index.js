@@ -79,21 +79,21 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 						  "title": "Menu",
 						  "text": "何曜日に追加しますか",
 						  "actions": [
-							  {
+							{
 								"type": "postback",
 								"label": "Buy",
 								"data": "action=buy&itemid=123"
-							  },
-							  {
-								"type": "postback",
-								"label": "Add to cart",
-								"data": "action=add&itemid=123"
-							  },
-							  {
-								"type": "message",
-								"label": "火曜日",
-								"text": "Tuesday"
-							  }
+							},
+							{
+							"type": "postback",
+							"label": "Add to cart",
+							"data": "action=add&itemid=123"
+							},
+							{  
+							"type":"message",
+							"label":"Yes",
+							"text":"Yes"
+							},
 						  ]
 					  }
 					};
