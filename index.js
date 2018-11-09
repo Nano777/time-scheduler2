@@ -81,8 +81,8 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 							"actions": [
 								{
 									"type": "postback",
-									"label": "Buy",
-									"data": "action=buy&itemid=123"
+									"label": "今日",
+									"data": "今日"
 								},
 								{
 									"type": "postback",
