@@ -82,7 +82,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 								{
 									"type": "postback",
 									"label": "Buy",
-									"data": "dow=Tuesday"
+									"data": "action=buy&itemid=123"
 								},
 								{
 									"type": "postback",
@@ -105,16 +105,6 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 			}
-		}else if(event.type == "postback"){
-			/*
-			switch(true){
-				case /[月火水木金土日]曜日/.test(event.postback.data):
-				var table = 'time_schedule';
-				var where = "WHERE day_of_week='"+ event.postback.data + "' ORDER BY period";
-				SelectQuery(event, table, where, 'list');
-				break;
-			}
-			*/
 		}
 	})
     //console.log(req.body);
