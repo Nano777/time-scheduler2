@@ -72,11 +72,12 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 				case /[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
 					var data = event.message.text.split('-');
-					var table = 'time_schedule';
-					var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
-					InsertQuery(event, table, query);
+					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.user_id]
+					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
+					var query = "INSERT INTO test VALUES ($1, $2, $3, $4, $5, $6, $7)"
+					InsertQuery(data, event, query, values);
 				default:
-					bot.replyMessage(data, event.replyToken,{
+					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"知りません"
 					});
@@ -129,13 +130,12 @@ function SelectQuery(event, table, where, type){
 		});	
 	});
 }
-function InsertQuery(data, event, table, query){
+function InsertQuery(data, event, query, values){
 	const reply = "";
-	client.query(query,function(error,result){
-		reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
+	client.query(query,values);
+	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
 		bot.replyMessage(event.replyToken,{
 			type:"text",
 			text:query
 		});
-	});
 }
