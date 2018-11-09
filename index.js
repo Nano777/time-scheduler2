@@ -82,7 +82,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 								{
 									"type": "postback",
 									"label": "Buy",
-									"data": "dow=Tuesday"
+									"data": "火曜日"
 								},
 								{
 									"type": "postback",
