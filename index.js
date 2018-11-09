@@ -132,7 +132,7 @@ function SelectQuery(event, table, where, type){
 	});
 }
 function InsertQuery(data, event, query, values){
-	const reply = "";
+	var reply = "";
 	client.query(query,values)
 	.then(res => {
 		console.log(res)
