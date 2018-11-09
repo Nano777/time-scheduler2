@@ -72,9 +72,30 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 				case /登録/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:""
+						type:"template",
+						template:"buttons",
+						"actions":[
+							{
+								type:"message",
+								label:"アクション 1",
+								text:"アクション 1t"
+							},
+							{
+								"type": "message",
+								"label": "アクション 2",
+								"text": "アクション 2"
+							},
+							{
+								"type": "message",
+								"label": "アクション 3",
+								"text": "アクション 3"
+							}
+						],
+						
+						text:"何曜日に追加しますか?"
+						
 					})
+					bot.replyMessage()
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
