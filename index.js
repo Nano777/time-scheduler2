@@ -81,14 +81,14 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 								text:"アクション 1t"
 							},
 							{
-								"type": "message",
-								"label": "アクション 2",
-								"text": "アクション 2"
+								type: "message",
+								label: "アクション 2",
+								text: "アクション 2"
 							},
 							{
-								"type": "message",
-								"label": "アクション 3",
-								"text": "アクション 3"
+								type: "message",
+								label: "アクション 3",
+								text: "アクション 3"
 							}
 						],
 						
