@@ -70,36 +70,13 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
 					SelectQuery(event, table, where, 'mail');
 					break;
-				case /登録/.test(event.message.text):
-					const message = {
-						"type": "template",
-						"altText": "This is a buttons template",
-						"template": {
-							"type": "buttons",
-							"title": "Menu",
-							"text": "何曜日に追加しますか",
-							"actions": [
-								{
-									"type": "postback",
-									"label": "Buy",
-									"data": "action=buy&itemid=123"
-								},
-								{
-									"type": "postback",
-									"label": "Add to cart",
-									"data": "action=add&itemid=123"
-								},
-								{  
-									"type":"message",
-									"label":"火曜日",
-									"text":"Tuesday"
-								}
-							]
-					  }
-					};
-					bot.replyMessage(event.replyToken,message);
+				case /[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
+					var data = event.message.text.split('-');
+					var table = 'time_schedule';
+					var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
+					InsertQuery(event, table, query);
 				default:
-					bot.replyMessage(event.replyToken,{
+					bot.replyMessage(data, event.replyToken,{
 						type:"text",
 						text:"知りません"
 					});
@@ -150,5 +127,15 @@ function SelectQuery(event, table, where, type){
 			type:"text",
 			text:reply
 		});	
+	});
+}
+function InsertQuery(data, event, table, query){
+	const reply = "";
+	client.query(query,function(error,result){
+		reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
+		bot.replyMessage(event.replyToken,{
+			type:"text",
+			text:reply
+		});
 	});
 }
