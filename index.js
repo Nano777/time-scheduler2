@@ -128,7 +128,7 @@ function SelectQuery(event, table, where, type){
 		//SendMessage
 		bot.replyMessage(event.replyToken,{
 			type:"text",
-			text:query
+			text:reply
 		});	
 	});
 }
