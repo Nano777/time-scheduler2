@@ -42,7 +42,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		var userid = event.source.userId;
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /^登録.*/.test():
+				case /^登録.*/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{
 						type:"text",
 						text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n例:\n1-3-木曜日-1-法学入門-共A11\n名前と場所は自分の分かるような名前で大丈夫です"
