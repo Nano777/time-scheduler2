@@ -134,10 +134,10 @@ function SelectQuery(event, table, where, type){
 }
 function InsertQuery(data, event, query, values){
 	var reply = "";
-	//var sql = client.format(query,values)
-	//var sql = query
-	//console.log(sql)
+	var sql = client.format(query,values)
+	console.log(sql)
 	
+	/*
 	client.query(query,values)
 	.then(res => {
 		console.log(res)
@@ -147,5 +147,6 @@ function InsertQuery(data, event, query, values){
 		type:"text",
 		text:reply
 	});
+	*/
 	
 }
