@@ -76,7 +76,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var data = event.message.text.split('-');
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.user_id]
 					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
-					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7);'
+					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period name, area, userid) VALUES ($1, $2, %I, $4, %I, %I, %I);'
 					InsertQuery(data, event, query, values);
 				default:
 					bot.replyMessage(event.replyToken,{
@@ -134,7 +134,6 @@ function SelectQuery(event, table, where, type){
 }
 function InsertQuery(data, event, query, values){
 	var reply = "";
-	values = [1,3,'a',1,'b','c','d']
 	var sql = client.format(query,values)
 	console.log(sql)
 	/*
