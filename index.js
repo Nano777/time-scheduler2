@@ -75,6 +75,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					console.log('登録モード')
 					var data = event.message.text.split('-');
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.user_id]
+					console.log(event.source.user_id)
 					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period , name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7);'
 					InsertQuery(data, event, query, values);
@@ -140,14 +141,15 @@ function InsertQuery(data, event, query, values){
 	client.query(query,values)
 	.then(res => {
 		console.log(res)
+		reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
+	
+		bot.replyMessage(event.replyToken,{
+			type:"text",
+			text:reply
+		});
 	})
-	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
-	/*
-	bot.replyMessage(event.replyToken,{
-		type:"text",
-		text:reply
-	});
-	*/
+	
+	
 	
 	
 }
