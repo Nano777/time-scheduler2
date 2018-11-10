@@ -41,12 +41,17 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /時間割/.test(event.message.text):
+				case /^[月火水木金土日]曜日.*/.test(event.message.text):
+					var table = 'time_schedule';
+					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
+					SelectQuery(event, table, where, 'list');
+					break;
+				case /^時間割/.test(event.message.text):
 					var table = 'time_schedule';
 					var where = "";
 					SelectQuery(event, table, where, 'list');
 					break;
-				case /きょう|今日/.test(event.message.text):
+				case /^きょう|今日/.test(event.message.text):
 					var dayName = '日月火水木金土'[new Date().getDay()];
 				case /あした|明日/.test(event.message.text):
 					if(typeof(dayName) == "undefined"){
@@ -59,25 +64,20 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var where = "WHERE day_of_week='"+ dayName + "' ORDER BY period";
 					SelectQuery(event, table, where, 'list');
 					break;
-				case /@.*/.test(event.message.text):
+				case /^@.*/.test(event.message.text):
 					console.log('@モード')
 					var name = event.message.text.slice(1);
 					var table = 'mails';
 					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
 					SelectQuery(event, table, where, 'mail');
 					break;
-				case /[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
+				case /^[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
 					console.log('登録モード')
 					var data = event.message.text.split('-');
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.user_id]
 					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7)'
 					InsertQuery(data, event, query, values);
-				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					var table = 'time_schedule';
-					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
-					SelectQuery(event, table, where, 'list');
-					break;
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
