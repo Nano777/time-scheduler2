@@ -141,6 +141,7 @@ function InsertQuery(data, event, query, values){
 	client.query(query,values)
 	.then(res => {
 		console.log(res)
+		console.log(event.source.user_id)
 		reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
 	
 		bot.replyMessage(event.replyToken,{
