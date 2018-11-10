@@ -134,7 +134,7 @@ function SelectQuery(event, table, where, type){
 }
 function InsertQuery(data, event, query, values){
 	var reply = "";
-	var sql = pg.format(query,values)
+	var sql = pg().format(query,values)
 	console.log(sql)
 	
 	/*
