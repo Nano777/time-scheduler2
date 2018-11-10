@@ -145,7 +145,7 @@ function InsertQuery(data, event, query, values){
 	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
 	bot.replyMessage(event.replyToken,{
 		type:"text",
-		text:query
+		text:reply
 	});
 	
 }
