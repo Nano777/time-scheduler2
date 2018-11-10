@@ -41,11 +41,6 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	req.body.events.forEach((event) =>{
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /[月火水木金土日]曜日.*/.test(event.message.text):
-					var table = 'time_schedule';
-					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
-					SelectQuery(event, table, where, 'list');
-					break;
 				case /時間割/.test(event.message.text):
 					var table = 'time_schedule';
 					var where = "";
@@ -87,6 +82,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7)'
 					InsertQuery(data, event, query, values);
 					*/
+				case /[月火水木金土日]曜日.*/.test(event.message.text):
+					var table = 'time_schedule';
+					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
+					SelectQuery(event, table, where, 'list');
+					break;
 				default:
 					bot.replyMessage(event.replyToken,{
 						type:"text",
