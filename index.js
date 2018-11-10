@@ -134,6 +134,7 @@ function SelectQuery(event, table, where, type){
 }
 function InsertQuery(data, event, query, values){
 	var reply = "";
+	values = [1,3,'a',1,'b','c','d']
 	var sql = client.format(query,values)
 	console.log(sql)
 	/*
