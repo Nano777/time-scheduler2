@@ -43,7 +43,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /^[月火水木金土日]曜日.*/.test(event.message.text):
 					var table = 'time_schedule';
-					var where = "WHERE day_of_week='"+ event.message.text + "' ORDER BY period";
+					var where = "WHERE day_of_week='"+ event.message.text + "' AND (userid='"+ event.source.userId +"' OR userid='null')ORDER BY period";
 					SelectQuery(event, table, where, 'list');
 					break;
 				case /^時間割/.test(event.message.text):
@@ -75,8 +75,6 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					console.log('登録モード')
 					var data = event.message.text.split('-');
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], event.source.userId]
-					console.log(event.source.user_id)
-					//var query = "INSERT INTO time_schedule VALUES ("+data[0]+","+data[1]+",'"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+event.source.user_id+"');"; 
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period , name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7);'
 					InsertQuery(data, event, query, values);
 					break;
