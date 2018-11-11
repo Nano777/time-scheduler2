@@ -86,10 +86,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					console.log('登録モード')
 					var data = event.message.text.split('-');
 					if(data.length != 6){
-						bot.replyMessage(event.replyToken,{
-							type:"text",
-							text:"形式が間違っているようだ。\nもう一度見直してみてくれ！"
-						})
+						repm("形式が間違っているようだ。\nもう一度見直してみてくれ！")
 						break;
 					}
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], userid]
@@ -98,17 +95,17 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					InsertQuery(data, event, query, values);
 					break;
 				default:
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:"知りません"
-					});
+					repm("知りません")
 					break;
 			}
 		}else if(event.type == "follow"){
+			repm("友だち追加ありがとう！\nまず初めに「登録」って話しかけてくれ！\n")
+		}
+		function repm(message){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
-				text:"友だち追加ありがとう！\nまず初めに「登録」って話しかけてくれ！\n"
-			});
+				text:message
+			})
 		}
 	})
     //console.log(req.body);
