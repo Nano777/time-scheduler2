@@ -49,8 +49,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
+					var dayName = event.message.text.slice(0,1) + "曜日";
 					var table = 'time_schedule';
-					var where = "WHERE day_of_week='"+ event.message.text + "' AND (userid='"+ userid +"' OR userid='null')ORDER BY period";
+					var where = "WHERE day_of_week='"+ dayName + "' AND (userid='"+ userid +"' OR userid='null')ORDER BY period";
 					SelectQuery(event, table, where, 'list');
 					break;
 				case /^時間割/.test(event.message.text):
