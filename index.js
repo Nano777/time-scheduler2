@@ -99,7 +99,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 			}
 		}else if(event.type == "follow"){
-			repm("友だち追加ありがとう！\nまず初めに「登録」って話しかけてくれ！\n")
+			repm("友だち追加ありがとう。\nまず初めに「登録」と話しかけて時間割の登録をしてくれ！")
 		}
 		
 		function repm(message){
