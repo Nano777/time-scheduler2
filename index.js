@@ -45,7 +45,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 				case /^登録.*/.test(event.message.text):
 					var message = [
 						{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"},
-						{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n名前と場所は自分の分かるような名前で大丈夫です"},
+						{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ"},
 						{type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"}
 					]
 					bot.replyMessage(event.replyToken,message);
@@ -79,13 +79,22 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var name = event.message.text.slice(1);
 					var table = 'mails';
 					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
+					
 					SelectQuery(event, table, where, 'mail');
 					break;
 				case /^[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
 					console.log('登録モード')
 					var data = event.message.text.split('-');
+					if(data.length != 6){
+						bot.replyMessage(event.replyToken,{
+							type:"text",
+							text:"形式が間違っているようだ。\nもう一度見直してみてくれ！"
+						})
+						break;
+					}
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], userid]
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period , name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7);'
+					
 					InsertQuery(data, event, query, values);
 					break;
 				default:
@@ -155,7 +164,7 @@ function InsertQuery(data, event, query, values){
 	.then(res => {
 		console.log(res)
 	})
-	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録しました";
+	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録したぜ。";
 	
 	bot.replyMessage(event.replyToken,{
 		type:"text",
