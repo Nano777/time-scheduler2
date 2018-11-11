@@ -48,7 +48,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 						text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n例:\n1-3-木曜日-1-法学入門-共A11\n名前と場所は自分の分かるような名前で大丈夫です"
 					});
 					break;
-				case /^[月火水木金土日]曜日.*/.test(event.message.text):
+				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
 					var table = 'time_schedule';
 					var where = "WHERE day_of_week='"+ event.message.text + "' AND (userid='"+ userid +"' OR userid='null')ORDER BY period";
 					SelectQuery(event, table, where, 'list');
