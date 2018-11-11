@@ -43,10 +43,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
 				case /^登録.*/.test(event.message.text):
-					bot.replyMessage(event.replyToken,{
-						type:"text",
-						text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n例:\n1-3-木曜日-1-法学入門-共A11\n名前と場所は自分の分かるような名前で大丈夫です"
-					});
+					bot.replyMessage(event.replyToken,{[
+						[type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"],
+						[type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n名前と場所は自分の分かるような名前で大丈夫です"],
+						[type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"]
+					]});
 					break;
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
 					var dayName = event.message.text.slice(0,1) + "曜日";
@@ -93,6 +94,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					});
 					break;
 			}
+		}else if(event.type == "follow"){
+			bot.replyMessage(event.replyToken,{
+				type:"text",
+				text:"友だち追加ありがとう！\nまず初めに「登録」って話しかけてくれ！\n"
+			});
 		}
 	})
     //console.log(req.body);
