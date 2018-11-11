@@ -101,6 +101,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		}else if(event.type == "follow"){
 			repm("友だち追加ありがとう！\nまず初めに「登録」って話しかけてくれ！\n")
 		}
+		
 		function repm(message){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
