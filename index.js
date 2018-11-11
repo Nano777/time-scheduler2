@@ -44,9 +44,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			switch(true){
 				case /^登録.*/.test(event.message.text):
 					bot.replyMessage(event.replyToken,{[
-						[type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"],
-						[type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n名前と場所は自分の分かるような名前で大丈夫です"],
-						[type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"]
+						{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"},
+						{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力してください\n名前と場所は自分の分かるような名前で大丈夫です"},
+						{type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"}
 					]});
 					break;
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
