@@ -168,26 +168,23 @@ function InsertQuery(data, event, query, values){
 				type:"text",
 				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「変更」と話しかけてくれ。"
 			});
-			break;
+		}else{
+			client.query(query,values)
+			.then(res => {
+				console.log(res)
+			})
+			reply = "学年："+data[0]+"\n"
+					+"クオーター："+data[1]+"\n"
+					+"曜日："+data[2]+"\n"
+					+"時間："+data[3]+"限目\n"
+					+"科目名："+data[4]+"\n"
+					+"場所："+data[5]+"\n"
+					+"上の内容で登録したぜ。";
+			
+			bot.replyMessage(event.replyToken,{
+				type:"text",
+				text:reply
+			});
 		}
 	})
-	client.query(query,values)
-	.then(res => {
-		console.log(res)
-	})
-	reply = "学年："+data[0]+"\n"
-			+"クオーター："+data[1]+"\n"
-			+"曜日："+data[2]+"\n"
-			+"時間："+data[3]+"限目\n"
-			+"科目名："+data[4]+"\n"
-			+"場所："+data[5]+"\n"
-			+"上の内容で登録したぜ。";
-	
-	bot.replyMessage(event.replyToken,{
-		type:"text",
-		text:reply
-	});
-	
-	
-	
 }
