@@ -158,8 +158,9 @@ function InsertQuery(data, event, query, values){
 	var reply = "";
 	var cval = [data[0],data[1],data[2],data[3]]
 	var check = "select count(*) from time_schedule where grade=$1 quarter=$2 day_of_week=$3 period=$4";
-	client.query(check,cval function(err,result){
-		console.log(result)
+	client.query(check,cval)
+	.then(function (result){
+		console.log(data)
 	})
 	client.query(query,values)
 	.then(res => {
