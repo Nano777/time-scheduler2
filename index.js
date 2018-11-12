@@ -163,6 +163,7 @@ function InsertQuery(data, event, query, values){
 	var check = "select count(*) from time_schedule where grade=$1 AND quarter=$2 AND day_of_week=$3 AND period=$4 AND userid=$5";
 	client.query(check,cval)
 	.then(res=> {
+		console.log(check)
 		console.log(res.rows[0].count)
 		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
