@@ -162,7 +162,13 @@ function InsertQuery(data, event, query, values){
 	.then(res => {
 		console.log(res)
 	})
-	reply = "学年："+data[0]+"\n第"+data[1]+"クオーター\n"+data[2]+"\n"+data[3]+"限目\n科目名："+data[4]+"\n場所："+data[5]+"\n上記の内容で登録したぜ。";
+	reply = "学年："+data[0]+"\n"
+			+"第"+data[1]+"クオーター\n"
+			+data[2]+"\n"
+			+data[3]+"限目\n"
+			+"科目名："+data[4]+"\n"
+			+"場所："+data[5]+"\n"
+			+"上記の内容で登録したぜ。";
 	
 	bot.replyMessage(event.replyToken,{
 		type:"text",
