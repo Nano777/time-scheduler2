@@ -163,8 +163,8 @@ function InsertQuery(data, event, query, values){
 	var check = "select count(*) from time_schedule where grade=$1 AND quarter=$2 AND day_of_week=$3 AND period=$4 AND userid=$5";
 	client.query(check,cval)
 	.then(res=> {
-		console.log(res.row.count)
-		if(res.rows.count != 0){
+		console.log(res.rows[0].count)
+		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
 				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「変更」と話しかけてくれ。"
