@@ -163,12 +163,12 @@ function InsertQuery(data, event, query, values){
 		console.log(res)
 	})
 	reply = "学年："+data[0]+"\n"
-			+"第"+data[1]+"クオーター\n"
-			+data[2]+"\n"
-			+data[3]+"限目\n"
+			+"クオーター：第"+data[1]+"クオーター\n"
+			+"曜日："+data[2]+"\n"
+			+"時間"+data[3]+"限目\n"
 			+"科目名："+data[4]+"\n"
 			+"場所："+data[5]+"\n"
-			+"上記の内容で登録したぜ。";
+			+"上の内容で登録したぜ。";
 	
 	bot.replyMessage(event.replyToken,{
 		type:"text",
