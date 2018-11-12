@@ -50,6 +50,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					]
 					bot.replyMessage(event.replyToken,message);
 					break;
+				case /^変更.*/.test(event.message.text):
+					repm("準備中");
+					break;
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
 					var dayName = event.message.text.slice(0,1) + "曜日";
 					var table = 'time_schedule';
@@ -160,7 +163,13 @@ function InsertQuery(data, event, query, values){
 	var check = "select count(*) from time_schedule where grade=$1 AND quarter=$2 AND day_of_week=$3 AND period=$4 AND userid=$5";
 	client.query(check,cval)
 	.then(res=> {
-		console.log(res)
+		if(res.rows.count != 0){
+			bot.replyMessage(event.replyToken,{
+				type:"text",
+				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「変更」と話しかけてくれ。"
+			});
+			break;
+		}
 	})
 	client.query(query,values)
 	.then(res => {
