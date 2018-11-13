@@ -164,10 +164,10 @@ function InsertQuery(data, event, query, values,userid){
 	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid=$1";
 	var sql = format(check,values[0],values[1],values[2],values[3]);
 	console.log(sql);
-	/*
-	client.query(check,cval)
+	
+	client.query(sql,values[6])
 	.then(res=> {
-		console.log(check)
+		//console.log(check)
 		console.log(res.rows[0].count)
 		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
@@ -193,5 +193,5 @@ function InsertQuery(data, event, query, values,userid){
 			});
 		}
 	})
-	*/
+	
 }
