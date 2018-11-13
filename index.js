@@ -96,7 +96,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], userid]
 					var query = 'INSERT INTO time_schedule (grade, quarter, day_of_week, period , name, area, userid) VALUES ($1, $2, $3, $4, $5, $6, $7);'
 					
-					InsertQuery(data, event, query, values, userid);
+					InsertQuery(data, event, query, values);
 					break;
 				default:
 					repm("知りません")
@@ -162,7 +162,8 @@ function InsertQuery(data, event, query, values,userid){
 	var reply = "";
 	//var cval = []
 	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid=%L";
-	var sql = format(check,values[0],values[1],values[2],values[3],userid);
+	var sql = format(check,values[0],values[1],values[2],values[3],event.source.userId);
+	console.log(values[6]);
 	console.log(sql);
 	/*
 	client.query(check,cval)
