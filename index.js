@@ -168,7 +168,7 @@ function InsertQuery(data, event, query, values,userid){
 	
 	client.query(sql)
 	.then(res=> {
-		console.log(check)
+		console.log(sql)
 		console.log(res.rows[0].count)
 		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
