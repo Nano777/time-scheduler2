@@ -2,7 +2,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
-var format = require(' pg-format ');
+var format = require("pg-format");
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
