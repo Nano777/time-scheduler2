@@ -161,7 +161,7 @@ function SelectQuery(event, table, where, type){
 function InsertQuery(data, event, query, values,userid){
 	var reply = "";
 	//var cval = []
-	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid=%L";
+	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid=%L;";
 	var sql = format(check,values[0],values[1],values[2],values[3],values[6]);
 	
 	console.log(sql);
