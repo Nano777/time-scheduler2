@@ -81,14 +81,14 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 							break;
 						case /^@登録.*/.test(event.message.text):
 							var message = [
-								{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"},
-								{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ"},
+								{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ。"},
+								{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ。"},
 								{type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"}
 							]
 							bot.replyMessage(event.replyToken,message);
 							break;
 						case /^@変更.*/.test(event.message.text):
-							repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ");
+							repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ。");
 							break;
 						default:
 							var name = event.message.text.slice(1);
@@ -103,7 +103,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					console.log('登録モード')
 					var data = event.message.text.split('-');
 					if(data.length != 6){
-						repm("形式が間違っているようだ。\nもう一度見直してみてくれ！")
+						repm("形式が間違っているようだ。\nもう一度見直してみてくれ。")
 						break;
 					}
 					var values = [data[0], data[1], data[2], data[3], data[4], data[5], userid]
@@ -111,12 +111,15 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					
 					InsertQuery(data, event, query, values);
 					break;
+				case /開発者/.test(event.message.text):
+					repm("CREATED BY NANO");
+					break;
 				default:
-					repm("よく分からんな。\n「@ヘルプ」でコマンド一覧を見ることが出来る。一度読んでみたらはどうだ？")
+					repm("よく分からんな。\n「@ヘルプ」でコマンド一覧を見ることが出来る。一度読んでみたらどうだ？")
 					break;
 			}
 		}else if(event.type == "follow"){
-			repm("友だち追加ありがとう。\nまず初めに「@登録」と話しかけて時間割の登録をしてくれ！")
+			repm("友だち追加ありがとう。\nまず初めに「@登録」と話しかけて時間割の登録をしてくれ。")
 		}
 		
 		function repm(message){
@@ -126,9 +129,12 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 			})
 		}
 	})
-    //console.log(req.body);
 });
 
+
+//--------------------------------------------------------------------
+//SELECT RECORDS
+//--------------------------------------------------------------------
 function SelectQuery(event, table, where, type){
 	const query = "SELECT * FROM " + table + " "+ where + ';';
 	var reply = '';
@@ -171,9 +177,12 @@ function SelectQuery(event, table, where, type){
 		});	
 	});
 }
+
+//--------------------------------------------------------------------
+//INSERT RECORD
+//--------------------------------------------------------------------
 function InsertQuery(data, event, query, values,userid){
 	var reply = "";
-	//var cval = []
 	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid='" + event.source.userId + "';";
 	var sql = format(check,values[0],values[1],values[2],values[3]);
 	
@@ -182,6 +191,9 @@ function InsertQuery(data, event, query, values,userid){
 	client.query(sql)
 	.then(res=> {
 		if(res.rows[0].count != 0){
+			//--------------------------------------
+			//Duplicate record
+			//--------------------------------------
 			bot.replyMessage(event.replyToken,{
 				type:"text",
 				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「@変更」と話しかけてくれ。"
@@ -189,20 +201,24 @@ function InsertQuery(data, event, query, values,userid){
 		}else{
 			client.query(query,values)
 			.then(res => {
+				//--------------------------------------
+				//completed registration
+				//--------------------------------------
 				console.log(res)
+				
+				reply = "学年："+data[0]+"\n"
+						+"クオーター："+data[1]+"\n"
+						+"曜日："+data[2]+"\n"
+						+"時間："+data[3]+"限目\n"
+						+"科目名："+data[4]+"\n"
+						+"場所："+data[5]+"\n"
+						+"上の内容で登録したぜ。";
+				
+				bot.replyMessage(event.replyToken,{
+					type:"text",
+					text:reply
+				});
 			})
-			reply = "学年："+data[0]+"\n"
-					+"クオーター："+data[1]+"\n"
-					+"曜日："+data[2]+"\n"
-					+"時間："+data[3]+"限目\n"
-					+"科目名："+data[4]+"\n"
-					+"場所："+data[5]+"\n"
-					+"上の内容で登録したぜ。";
-			
-			bot.replyMessage(event.replyToken,{
-				type:"text",
-				text:reply
-			});
 		}
 	})
 	
