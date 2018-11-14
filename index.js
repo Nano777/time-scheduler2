@@ -32,6 +32,7 @@ const config = {
 
 const WeekChars = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日"];
 const client = new pg.Client(config);
+const cmd = ["@登録","@変更","X曜日"]
 client.connect();
 
 // -----------------------------------------------------------------------------
@@ -43,17 +44,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 		var userid = event.source.userId;
 		if(event.type == "message" && event.message.type == "text"){
 			switch(true){
-				case /^登録.*/.test(event.message.text):
-					var message = [
-						{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"},
-						{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ"},
-						{type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"}
-					]
-					bot.replyMessage(event.replyToken,message);
-					break;
-				case /^変更.*/.test(event.message.text):
-					repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ");
-					break;
+
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
 					var dayName = event.message.text.slice(0,1) + "曜日";
 					var table = 'time_schedule';
@@ -79,12 +70,34 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					SelectQuery(event, table, where, 'list');
 					break;
 				case /^@.*/.test(event.message.text):
-					console.log('@モード')
-					var name = event.message.text.slice(1);
-					var table = 'mails';
-					var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
+					switch(true){
+						case/^@ヘルプ/.test(event.message.text):
+							var rep = "";
+							cmd.forEach(function(name){
+								rep = rep + name + "\n";
+							});
+							rep =rep+"基本的なコマンド一覧だ。詳しくは自分で色々試してみてくれ。";
+							repm(rep);
+							break;
+						case /^@登録.*/.test(event.message.text):
+							var message = [
+								{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ!"},
+								{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ"},
+								{type:"text",text:"例:\n1-3-木曜日-1-法学入門-共A11"}
+							]
+							bot.replyMessage(event.replyToken,message);
+							break;
+						case /^@変更.*/.test(event.message.text):
+							repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ");
+							break;
+						default:
+							var name = event.message.text.slice(1);
+							var table = 'mails';
+							var where = "WHERE name='" + name + "' OR hiragana='" + name + "'";
 					
-					SelectQuery(event, table, where, 'mail');
+							SelectQuery(event, table, where, 'mail');
+							break;
+					}
 					break;
 				case /^[1-6]-[1-4]-[月火水木金]曜日-[1-6]-.*-.*/.test(event.message.text):
 					console.log('登録モード')
@@ -103,7 +116,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					break;
 			}
 		}else if(event.type == "follow"){
-			repm("友だち追加ありがとう。\nまず初めに「登録」と話しかけて時間割の登録をしてくれ！")
+			repm("友だち追加ありがとう。\nまず初めに「@登録」と話しかけて時間割の登録をしてくれ！")
 		}
 		
 		function repm(message){
@@ -171,7 +184,7 @@ function InsertQuery(data, event, query, values,userid){
 		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
-				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「変更」と話しかけてくれ。"
+				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「@変更」と話しかけてくれ。"
 			});
 		}else{
 			client.query(query,values)
