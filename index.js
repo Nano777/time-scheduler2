@@ -52,7 +52,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					bot.replyMessage(event.replyToken,message);
 					break;
 				case /^変更.*/.test(event.message.text):
-					repm("準備中");
+					repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ");
 					break;
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
 					var dayName = event.message.text.slice(0,1) + "曜日";
