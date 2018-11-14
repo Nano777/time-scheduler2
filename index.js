@@ -112,7 +112,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					InsertQuery(data, event, query, values);
 					break;
 				default:
-					repm("知りません")
+					repm("よく分からんな。\n「@ヘルプ」でコマンド一覧を見ることが出来る。一度読んでみてはどうだ？")
 					break;
 			}
 		}else if(event.type == "follow"){
