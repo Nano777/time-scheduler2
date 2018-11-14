@@ -162,14 +162,12 @@ function InsertQuery(data, event, query, values,userid){
 	var reply = "";
 	//var cval = []
 	var check = "select count(*) from time_schedule where grade=%s AND quarter=%s AND day_of_week=%L AND userid='" + event.source.userId + "';";
-	var sql = format(check,values[0],values[1],values[2],values[3],values[6]);
+	var sql = format(check,values[0],values[1],values[2],values[3]);
 	
 	console.log(sql);
 	
 	client.query(sql)
 	.then(res=> {
-		console.log(sql)
-		console.log(res.rows[0].count)
 		if(res.rows[0].count != 0){
 			bot.replyMessage(event.replyToken,{
 				type:"text",
