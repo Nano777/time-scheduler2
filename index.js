@@ -43,6 +43,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 	req.body.events.forEach((event) =>{
 		var userid = event.source.userId;
 		if(event.type == "message" && event.message.type == "text"){
+			console.log(event.message.text)
 			switch(true){
 
 				case /^[月火水木金土日]曜日?.*/.test(event.message.text):
