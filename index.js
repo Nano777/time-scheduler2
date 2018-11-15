@@ -32,7 +32,7 @@ const config = {
 
 const WeekChars = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日"];
 const client = new pg.Client(config);
-const cmd = ["@登録","@変更","X曜日"]
+const cmd = ["#登録","#変更","X曜日"]
 client.connect();
 
 // -----------------------------------------------------------------------------
@@ -69,9 +69,9 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					var where = "WHERE day_of_week='"+ dayName + "' AND (userid='"+ userid +"' OR userid='null')ORDER BY period";
 					SelectQuery(event, table, where, 'list');
 					break;
-				case /^@.*/.test(event.message.text):
+				case /^#.*/.test(event.message.text):
 					switch(true){
-						case/^@ヘルプ/.test(event.message.text):
+						case/^#ヘルプ/.test(event.message.text):
 							var rep = "";
 							cmd.forEach(function(name){
 								rep = rep + name + "\n";
@@ -79,7 +79,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 							rep =rep+"基本的なコマンド一覧だ。詳しくは自分で色々試してみてくれ。";
 							repm(rep);
 							break;
-						case /^@登録.*/.test(event.message.text):
+						case /^#登録.*/.test(event.message.text):
 							var message = [
 								{type:"text",text:"必須はすでに登録してあるから選択科目を登録してくれ。"},
 								{type:"text",text:"学年-クオーター-曜日-時限-講義名-場所\nの形で入力すれば登録できるぞ！\n名前と場所は自分が分かるように入力してくれて構わないが'-'は挟まないでくれ。"},
@@ -87,7 +87,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 							]
 							bot.replyMessage(event.replyToken,message);
 							break;
-						case /^[@|＠]変更.*/.test(event.message.text):
+						case /^#変更.*/.test(event.message.text):
 							repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ。");
 							break;
 						default:
@@ -115,11 +115,11 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 					repm("CREATED BY NANO");
 					break;
 				default:
-					repm("よく分からんな。\n「@ヘルプ」でコマンド一覧を見ることが出来る。一度読んでみたらどうだ？")
+					repm("よく分からんな。\n「#ヘルプ」でコマンド一覧を見ることが出来る。一度読んでみたらどうだ？")
 					break;
 			}
 		}else if(event.type == "follow"){
-			repm("友だち追加ありがとう。\nまず初めに「@登録」と話しかけて時間割の登録をしてくれ。")
+			repm("友だち追加ありがとう。\nまず初めに「#登録」と話しかけて時間割の登録をしてくれ。")
 		}
 		
 		function repm(message){
@@ -198,7 +198,7 @@ function InsertQuery(data, event, query, values,userid){
 			//--------------------------------------
 			bot.replyMessage(event.replyToken,{
 				type:"text",
-				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「@変更」と話しかけてくれ。"
+				text:"その時間帯はすでに登録されてるみたいだ。\n変更したい場合は「#変更」と話しかけてくれ。"
 			});
 		}else{
 			client.query(query,values)
