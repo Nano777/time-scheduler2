@@ -87,7 +87,7 @@ server.post('/callback', line.middleware(line_config), (req, res, next) => {
 							]
 							bot.replyMessage(event.replyToken,message);
 							break;
-						case /^@変更.*/.test(event.message.text):
+						case /^[@|＠]変更.*/.test(event.message.text):
 							repm("準備中だ。\n急用なら開発者に直接連絡してみてくれ。");
 							break;
 						default:
@@ -142,6 +142,7 @@ function SelectQuery(event, table, where, type){
 	client.query(query,function(error,result){
 		//--------------------------------------
 		//No result
+		//--------------------------------------
 		if(result.rowCount == 0){
 			console.log(result);
 			bot.replyMessage(event.replyToken,{
@@ -154,6 +155,7 @@ function SelectQuery(event, table, where, type){
 		
 		//--------------------------------------
 		//IndentMessage
+		//--------------------------------------
 		switch(true){
 			case /list/.test(type):
 				result.rows.forEach(function(row){
